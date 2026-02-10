@@ -368,7 +368,7 @@
                                     <div class="col-6">
                                         <label class="form-label fw-bold">Price</label>
                                         <div class="input-group">
-                                            <span class="input-group-text bg-white">$</span>
+                                            <span class="input-group-text bg-white">₱</span>
                                             <input type="number" step="0.01" class="form-control" name="price" value="{{ $product->price }}" required>
                                         </div>
                                     </div>
@@ -508,7 +508,7 @@
                                 <div class="col-6">
                                     <label class="form-label fw-bold">Price <span class="text-danger">*</span></label>
                                     <div class="input-group">
-                                        <span class="input-group-text bg-white">$</span>
+                                        <span class="input-group-text bg-white">₱</span>
                                         <input type="number" step="0.01" class="form-control" name="price" value="{{ old('price') }}" placeholder="0.00" required>
                                     </div>
                                 </div>

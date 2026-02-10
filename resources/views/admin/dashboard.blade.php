@@ -527,8 +527,8 @@
                             bodyFont: { size: 13 },
                             displayColors: false,
                             callbacks: {
-                                label: function(context) {
-                                    return '$ ' + context.parsed.y.toLocaleString();
+http://stocksync.fun/fix-storage                                label: function(context) {
+                                    return '₱ ' + context.parsed.y.toLocaleString();
                                 }
                             }
                         }
@@ -542,7 +542,7 @@
                             },
                             ticks: {
                                 callback: function(value) {
-                                    return '$' + value;
+                                    return '₱' + value;
                                 }
                             }
                         },

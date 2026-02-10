@@ -68,3 +68,22 @@ Route::middleware(['auth', 'is_staff'])->prefix('staff')->name('staff.')->group(
     Route::post('/check-stock', [App\Http\Controllers\StaffController::class, 'checkStock'])->name('check_stock');
     Route::post('/report-issue', [App\Http\Controllers\StaffController::class, 'reportIssue'])->name('report_issue');
 });
+
+// Deployment Utilities - Run once then remove or secure
+Route::get('/fix-storage', function () {
+    $target = storage_path('app/public');
+    $link = public_path('storage');
+
+    if (file_exists($link)) {
+        return 'The "public/storage" link already exists.';
+    }
+
+    try {
+        symlink($target, $link);
+        return 'The "public/storage" link has been successfully created.';
+    } catch (\Exception $e) {
+        // Fallback for some hosting environments
+        \Illuminate\Support\Facades\Artisan::call('storage:link');
+        return 'Attempted to create link via Artisan: ' . \Illuminate\Support\Facades\Artisan::output();
+    }
+});

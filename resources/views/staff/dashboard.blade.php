@@ -580,7 +580,7 @@
                             displayColors: false,
                             callbacks: {
                                 label: function(context) {
-                                    return '$' + context.parsed.y.toFixed(2);
+                                    return '₱' + context.parsed.y.toFixed(2);
                                 }
                             }
                         }
@@ -589,7 +589,7 @@
                         y: {
                             beginAtZero: true,
                             grid: { borderDash: [5, 5], color: '#f1f5f9' },
-                            ticks: { callback: function(value) { return '$' + value; } }
+                            ticks: { callback: function(value) { return '₱' + value; } }
                         },
                         x: {
                             grid: { display: false }
