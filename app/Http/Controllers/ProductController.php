@@ -80,7 +80,8 @@ class ProductController extends Controller
                 $ext = $mime ? explode('/', $mime)[1] : 'jpg';
             }
             $filename = \Illuminate\Support\Str::uuid() . '.' . $ext;
-            \Illuminate\Support\Facades\Storage::disk('public')->putFileAs('products', $file, $filename);
+            // Move directly to public/storage/products to bypass symlink issues on shared hosting
+            $file->move(public_path('storage/products'), $filename);
             $imagePath = 'products/' . $filename;
         }
 
@@ -155,8 +156,8 @@ class ProductController extends Controller
 
         if ($request->hasFile('image')) {
             // Delete old image if exists
-            if ($product->image && \Illuminate\Support\Facades\Storage::disk('public')->exists($product->image)) {
-                \Illuminate\Support\Facades\Storage::disk('public')->delete($product->image);
+            if ($product->image && file_exists(public_path('storage/' . $product->image))) {
+                unlink(public_path('storage/' . $product->image));
             }
             $file = $request->file('image');
             $ext = $file->getClientOriginalExtension();
@@ -165,7 +166,8 @@ class ProductController extends Controller
                 $ext = $mime ? explode('/', $mime)[1] : 'jpg';
             }
             $filename = \Illuminate\Support\Str::uuid() . '.' . $ext;
-            \Illuminate\Support\Facades\Storage::disk('public')->putFileAs('products', $file, $filename);
+            // Move directly to public/storage/products
+            $file->move(public_path('storage/products'), $filename);
             $data['image'] = 'products/' . $filename;
         }
 
@@ -199,6 +201,12 @@ class ProductController extends Controller
     public function destroy($id)
     {
         $product = \App\Models\Product::where('admin_id', $this->getAdminId())->findOrFail($id);
+        
+        // Delete image if exists
+        if ($product->image && file_exists(public_path('storage/' . $product->image))) {
+            unlink(public_path('storage/' . $product->image));
+        }
+        
         $product->delete();
         return redirect()->back()->with('success', 'Product deleted successfully.');
     }
